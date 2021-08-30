@@ -37,6 +37,9 @@ const byte gate6 = A5;
 const byte gate7 = 8;
 const byte gate8 = 9;
 
+const byte Gates[]={A0,A1,A2,A3,A4,A5,8,9};
+const byte Muxs[]={11,12,13};
+
 const byte muxA = 11;
 const byte muxB = 12;
 const byte muxC = 13;
@@ -69,18 +72,13 @@ void setup() {
   pinMode(reset, INPUT);
   pinMode(rateKnob, INPUT);
 
-  pinMode(gate1, OUTPUT);
-  pinMode(gate2, OUTPUT);
-  pinMode(gate3, OUTPUT);
-  pinMode(gate4, OUTPUT);
-  pinMode(gate5, OUTPUT);
-  pinMode(gate6, OUTPUT);
-  pinMode(gate7, OUTPUT);
-  pinMode(gate8, OUTPUT);
+for (int i=0;i<8;i++){
+     pinMode(Gates[i], OUTPUT);
+  }
+  for (int i=0;i<3;i++){
+     pinMode(Muxs[i], OUTPUT);
+  }
 
-  pinMode(muxA, OUTPUT);
-  pinMode(muxB, OUTPUT);
-  pinMode(muxC, OUTPUT);
 
   /* The whole of the module is control by the clock in, which is attached to an interrupt. Even the internal clock out loops out of the ATMEGA and back into this interrupt.
   This keeps the whole module in rock solid time.*/
@@ -130,268 +128,33 @@ void clockChange() {
   }
 }
 
+void WriteMux(int i){
+  i=i-1;
+  if (i>7)
+     i=15-i;
+  for (int i=0;i<3;i++){
+    digitalWrite(Muxs[i],(i & 0x01));
+    i >>0x1;
+  }
+}
+
 /*At each step, the */
 void stepper(byte i) {
 
   //Set Fader Multiplexer to the correct channel and turn on the correct gate
-
-  switch (i) {
-    case 1:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, HIGH);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 2:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, HIGH);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 3:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, HIGH);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 4:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, HIGH);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 5:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, HIGH);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 6:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, HIGH);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 7:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, HIGH);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 8:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, HIGH);
-
-      break;
-
-    case 16:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, HIGH);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 15:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, HIGH);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 14:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, HIGH);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 13:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, LOW);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, HIGH);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 12:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, HIGH);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 11:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, LOW);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, HIGH);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 10:
-      digitalWrite(muxA, LOW);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, HIGH);
-      digitalWrite(gate8, LOW);
-
-      break;
-
-    case 9:
-      digitalWrite(muxA, HIGH);
-      digitalWrite(muxB, HIGH);
-      digitalWrite(muxC, HIGH);
-
-      digitalWrite(gate1, LOW);
-      digitalWrite(gate2, LOW);
-      digitalWrite(gate3, LOW);
-      digitalWrite(gate4, LOW);
-      digitalWrite(gate5, LOW);
-      digitalWrite(gate6, LOW);
-      digitalWrite(gate7, LOW);
-      digitalWrite(gate8, HIGH);
-
-      break;
+  //This  replaces code in the switch statement to turn on the correct gate
+  for (int j=0;j<8;j++){
+    digitalWrite(Gates[j],LOW);
+  
   }
+  i=i-1;
+  if (i<=7){
+     digitalWrite(Gates[i],HIGH);
+  }else{
+    digitalWrite(Gates[15-i],HIGH);
+  }
+  WriteMux(i);
+  
 
   //Check for Gate on reset
   if (digitalRead(reset) == LOW && dir == 1) {
