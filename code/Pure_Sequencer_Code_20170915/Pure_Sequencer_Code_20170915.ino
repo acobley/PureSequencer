@@ -9,6 +9,13 @@ Full Open Source Documentation at https://gmsn.co.uk/pure-adsr including hardwar
 For more indepth build and general support chat, join us at the GMSN! Synth Design Slack: https://join.slack.com/t/gmsnsynthdesign/shared_invite/MjE0NzM1ODc3NDkyLTE1MDA0NTI1MTItODQ3MDM4OTdlYw
 
 */
+
+
+/* Andy
+ *  
+ *  Adding code to run as drum machine.
+ *  
+ */
 #include <EEPROM.h>
 
 //Setup pin variables
